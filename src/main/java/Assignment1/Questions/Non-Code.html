@@ -1,0 +1,9 @@
+1. When the handler "catch (Exception e)" is used in Java any exceptions that occur are caught. This is however
+a bad practice as using this to catch exceptions makes it more difficult to see what the exception may is.
+
+2. This code has an issue in that it will not compile due to the two exceptions that are attempting to be caught.
+Since the first catch is a "catchall" with the "catch (Exception e)" The next exception is not needed and will
+never actually occur. Java will refuse to let this code compile due to this error
+
+9. To enable assertions in Java you have to click on "Current File" and select "Edit Configurations..." Select the file you want to allow assertions for, open the drop down
+menu "Modify options", select "Add VM Options" and type -ea under the VM options.
