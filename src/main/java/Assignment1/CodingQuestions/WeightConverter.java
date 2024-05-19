@@ -1,4 +1,4 @@
-package Assignment1;
+package Assignment1.CodingQuestions;
 
 public class WeightConverter {
     public double poundsToKilos(double pounds) {
@@ -13,10 +13,9 @@ public class WeightConverter {
 
     public static void main(String[] args) {
         WeightConverter converter = new WeightConverter();
-        System.out.println(converter.poundsToKilos(2));
-        System.out.println(converter.kilosToPounds(4));
-        System.out.println(converter.kilosToPounds(-1));
-        System.out.println(converter.kilosToPounds(0));
-
+        System.out.println("Converting 2 pounds to kilograms: " + converter.poundsToKilos(2));
+        System.out.println("Converting 4 kilograms to pounds: " + converter.kilosToPounds(4));
+        System.out.println("Converting -1 kilogram to pounds: " + converter.kilosToPounds(-1));
+        System.out.println("Converting -2 kilograms to pounds: " + converter.poundsToKilos(-2));
     }
 }

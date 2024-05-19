@@ -1,17 +1,20 @@
-package Assignment1.review_soln.review_soln;
+package Assignment1.Excercise4;
 
 public class Circle extends Shape{
     private Double radius;
 
-    public Circle(Double radius){
-        this.radius = radius;
+    public Circle(Double radius) throws InvalidShapeParameterException {
+        setRadius(radius);
     }
 
     public Double getRadius(){
         return radius;
     }
 
-    public void setRadius(){
+    public void setRadius(Double radius) throws InvalidShapeParameterException {
+        if (radius < 0) {
+            throw new InvalidShapeParameterException();
+        }
         this.radius = radius;
     }
 

@@ -1,20 +1,23 @@
-package Assignment1.review_soln.review_soln;
+package Assignment1.Excercise4;
 
 public class Rectangle extends Shape{
 
     private double length;
     private double width;
 
-    public Rectangle(double length, double width){
-        this.length = length;
-        this.width = width;
+    public Rectangle(double length, double width) throws InvalidShapeParameterException {
+        setLength(length);
+        setWidth(width);
     }
 
     public double getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(double length) throws InvalidShapeParameterException{
+        if (length < 0) {
+            throw new InvalidShapeParameterException();
+        }
         this.length = length;
     }
 
@@ -22,7 +25,10 @@ public class Rectangle extends Shape{
         return width;
     }
 
-    public void setWidth(double width) {
+    public void setWidth(double width) throws InvalidShapeParameterException {
+        if (width < 0) {
+            throw new InvalidShapeParameterException();
+        }
         this.width = width;
     }
 

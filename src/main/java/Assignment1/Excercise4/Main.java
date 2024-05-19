@@ -1,15 +1,18 @@
-package Assignment1.review_soln.review_soln;
+package Assignment1.Excercise4;
 
 public class Main {
     public static void main(String[] args) {
+        ShapeGenerator generator = new ShapeGenerator();
         Shape[] shapes = new Shape[5];
 
-        int num = 0;
+
+        for (int i = 0; i < shapes.length; i++) {
+            shapes[i] = generator.generateShape();
+        }
+
         for (Shape shape : shapes) {
-            shape = ShapeGenerator.generateShape();
-            shapes[num] = shape;
-            num++;
             System.out.println(shape.getDescription());
         }
+
     }
 }
