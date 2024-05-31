@@ -3,86 +3,135 @@ package Assignment2;
 import java.util.ArrayList;
 
 public class PhoneNumberToLetters {
-    public String toLetters(String phoneNumber) {
-        ArrayList<String> potentialString = new ArrayList<>();
+    public void toLetters(String phoneNumber) {
+        StringBuilder stringToAdd = new StringBuilder();
         ArrayList<Character> phoneNumberChar = new ArrayList<>();
+        ArrayList<String> potentialString = new ArrayList<>();
         for (int i = 0; i < phoneNumber.length(); i++) {
             char ch = phoneNumber.charAt(i);
             phoneNumberChar.add(ch);
         }
         int counter = 0;
+        do {
             for (int i = 0; i < phoneNumber.length(); i++) {
-            if (phoneNumberChar.get(i) == '2') {
-                if (counter == 0) {
-                    potentialString.add("A");
-                    counter++;
-                } else if (counter == 1 && phoneNumberChar.get(i-1) == '2') {
-                    potentialString.add("B");
-                    counter++;
-                } else if (counter == 2 && phoneNumberChar.get(i-1) == '2') {
-                    potentialString.add("C");
-                    counter = 0;
+                System.out.print(phoneNumberChar.get(i));
+                if (phoneNumberChar.get(i) == '2') {
+                    if (counter == 0) {
+                        stringToAdd.append("A");
+                        counter++;
+                    } else if (counter == 1 && phoneNumberChar.get(i - 1) == '2') {
+                        stringToAdd.append("B");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i - 1) == '2') {
+                        stringToAdd.append("C");
+                        counter = 0;
+                    }
                 }
+                else if (phoneNumberChar.get(i) == '3') {
+                    if (counter == 0) {
+                        stringToAdd.append("D");
+                        counter++;
+                    } else if (counter == 1 && phoneNumberChar.get(i-1) == '3') {
+                        stringToAdd.append("E");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i-1) == '3') {
+                        stringToAdd.append("F");
+                        counter = 0;
+                    }
+                    if (counter == 1 && phoneNumberChar.get(i - 1) != '3') {
+                        counter = 0;
+                    }
+                } else if (phoneNumberChar.get(i) == '4') {
+                    if (counter == 0) {
+                        stringToAdd.append("G");
+                        counter++;
+                    } else if (counter == 1 && (phoneNumberChar.get(i-1) == '4')) {
+                        stringToAdd.append("H");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i-1) == '4'){
+                        stringToAdd.append("I");
+                        counter = 0;
+                    }
+                    if (counter == 1 && phoneNumberChar.get(i - 1) != '4') {
+                        counter = 0;
+                    }
+                } else if (phoneNumberChar.get(i) == '5') {
+                    if (counter == 0) {
+                        stringToAdd.append("J");
+                        counter++;
+                    } else if (counter == 1 && phoneNumberChar.get(i-1) == '5') {
+                        stringToAdd.append("K");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i-1) == '5') {
+                        stringToAdd.append("L");
+                        counter = 0;
+                    }
+                    if (counter == 1 && phoneNumberChar.get(i - 1) != '5') {
+                        counter = 0;
+                    }
+                } else if (phoneNumberChar.get(i) == '6') {
+                    if (counter == 0) {
+                        stringToAdd.append("M");
+                        counter++;
+                    } else if (counter == 1 && phoneNumberChar.get(i-1) == '6') {
+                        stringToAdd.append("N");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i-1) == '6') {
+                        stringToAdd.append("O");
+                        counter = 0;
+                    }
+                    if (counter == 1 && phoneNumberChar.get(i - 1) != '6') {
+                        counter = 0;
+                    }
+                } else if (phoneNumberChar.get(i) == '7') {
+                    if (counter == 0) {
+                        stringToAdd.append("P");
+                        counter++;
+                    } else if (counter == 1 && phoneNumberChar.get(i-1) == '7') {
+                        stringToAdd.append("R");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i-1) == '7') {
+                        stringToAdd.append("S");
+                        counter = 0;
+                    }
+                    if (counter == 1 && phoneNumberChar.get(i - 1) != '7') {
+                        counter = 0;
+                    }
+                } else if (phoneNumberChar.get(i) == '8') {
+                    if (counter == 0) {
+                        stringToAdd.append("T");
+                        counter++;
+                    } else if (counter == 1 && phoneNumberChar.get(i-1) == '8') {
+                        stringToAdd.append("U");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i-1) == '8') {
+                        stringToAdd.append("V");
+                        counter = 0;
+                    }
+                    if (counter == 1 && phoneNumberChar.get(i - 1) != '8') {
+                        counter = 0;
+                    }
+                } else if (phoneNumberChar.get(i) == '9') {
+                    if (counter == 0) {
+                        stringToAdd.append("W");
+                        counter++;
+                    } else if (counter == 1 && phoneNumberChar.get(i-1) == '9') {
+                        stringToAdd.append("X");
+                        counter++;
+                    } else if (counter == 2 && phoneNumberChar.get(i-1) == '9') {
+                        stringToAdd.append("Y");
+                        counter = 0;
+                    }
+                    if (counter == 1 && phoneNumberChar.get(i - 1) != '2') {
+                        counter = 0;
+                    }
+                }
+
             }
-            else if (phoneNumberChar.get(i) == '3') {
-                if (counter == 0) {
-                    potentialString.add("D");
-                } else if (counter == 1) {
-                    potentialString.add("E");
-                } else {
-                    potentialString.add("F");
-                }
-            } else if (phoneNumberChar.get(i) == '4') {
-                if (counter == 0) {
-                    potentialString.add("G");
-                } else if (counter == 1) {
-                    potentialString.add("H");
-                } else {
-                    potentialString.add("I");
-                }
-            } else if (phoneNumberChar.get(i) == '5') {
-                if (counter == 0) {
-                    potentialString.add("J");
-                } else if (counter == 1) {
-                    potentialString.add("K");
-                } else {
-                    potentialString.add("L");
-                }
-            } else if (phoneNumberChar.get(i) == '6') {
-                if (counter == 0) {
-                    potentialString.add("M");
-                } else if (counter == 1) {
-                    potentialString.add("N");
-                } else {
-                    potentialString.add("O");
-                }
-            } else if (phoneNumberChar.get(i) == '7') {
-                if (counter == 0) {
-                    potentialString.add("P");
-                } else if (counter == 1) {
-                    potentialString.add("R");
-                } else {
-                    potentialString.add("S");
-                }
-            } else if (phoneNumberChar.get(i) == '8') {
-                if (counter == 0) {
-                    potentialString.add("T");
-                } else if (counter == 1) {
-                    potentialString.add("U");
-                } else {
-                    potentialString.add("V");
-                }
-            } else if (phoneNumberChar.get(i) == '9') {
-                if (counter == 0) {
-                    potentialString.add("W");
-                } else if (counter == 1) {
-                    potentialString.add("X");
-                } else {
-                    potentialString.add("Y");
-                }
-            }
+            potentialString.add(stringToAdd.toString());
         }
+        while (potentialString.size() < 45927);
+
         System.out.println(potentialString);
-        return "Oifdg";
     }
 }
