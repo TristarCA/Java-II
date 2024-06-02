@@ -19,7 +19,7 @@ public class GuessProgram {
         Long timestamp = date.getTime();
         Numbers numbers = new Numbers();
 
-        try(BufferedWriter output = Files.newBufferedWriter(Paths.get("./logs/gamelog"+timestamp+".txt"))) {
+        try(BufferedWriter output = Files.newBufferedWriter(Paths.get("./gamelog"+timestamp+".txt"))) {
             int correct = rand.nextInt( 1, 100);
             int guess = -99;
             int totalGuesses = 0;
