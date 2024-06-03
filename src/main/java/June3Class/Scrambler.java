@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Scrambler {
     public static void main(String[] args) {
-        String name = "Tristan Norman";
+        String name = "Tristan Normana";
         Random rand = new Random();
         char[] list = name.toCharArray();
         for (int i=0; i<20; i++) {
