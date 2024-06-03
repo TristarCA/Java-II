@@ -14,12 +14,11 @@ public class PhishingScamChecker {
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                 String line;
                 int totalPoints = 0;
-                // Reads each line of text in the file
                 while ((line = br.readLine()) != null) {
                     for (String threat : mildThreats) {
                         int occurrences = countOccurrences(line.toLowerCase(), threat.toLowerCase());
                         if (occurrences > 0) {
-                            totalPoints += 1 * occurrences; // Assign a score of 1 for mild threats
+                            totalPoints += occurrences; // Assign a score of 1 for mild threats
                         }
                     }
                     for (String threat : moderateThreats) {
