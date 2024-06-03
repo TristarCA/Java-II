@@ -19,7 +19,6 @@ public class Telephone {
         PhoneNumberToLetters converter = new PhoneNumberToLetters();
         List<String> combinations = converter.toLetters(phoneNumber);
 
-        // Write the combinations to a file using Formatter.
         try (Formatter formatter = new Formatter(new FileOutputStream("potentialWords.txt"))) {
             for (String combination : combinations) {
                 formatter.format("%s%n", combination);
@@ -29,8 +28,17 @@ public class Telephone {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }
-    private static boolean isValidPhoneNumber(String phoneNumber) {
-        // Check if the phone number is exactly 7 digits long and contains only digits 2-9
-        return phoneNumber.length() == 7 && phoneNumber.matches("[2-9]+");
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        if (phoneNumber.length() != 7) {
+            return false;
+        }
+
+        for (int i = 0; i < phoneNumber.length(); i++) {
+            char c = phoneNumber.charAt(i);
+            if (c < '2' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 }

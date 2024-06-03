@@ -18,19 +18,19 @@ public class PhishingScamChecker {
                     for (String threat : mildThreats) {
                         int occurrences = countOccurrences(line.toLowerCase(), threat.toLowerCase());
                         if (occurrences > 0) {
-                            totalPoints += occurrences; // Assign a score of 1 for mild threats
+                            totalPoints += occurrences;
                         }
                     }
                     for (String threat : moderateThreats) {
                         int occurrences = countOccurrences(line.toLowerCase(), threat.toLowerCase());
                         if (occurrences > 0) {
-                            totalPoints += 2 * occurrences; // Assign a score of 2 for moderate threats
+                            totalPoints += 2 * occurrences;
                         }
                     }
                     for (String threat : likelyThreats) {
                         int occurrences = countOccurrences(line.toLowerCase(), threat.toLowerCase());
                         if (occurrences > 0) {
-                            totalPoints += 3 * occurrences; // Assign a score of 3 for likely threats
+                            totalPoints += 3 * occurrences;
                         }
                     }
                 }

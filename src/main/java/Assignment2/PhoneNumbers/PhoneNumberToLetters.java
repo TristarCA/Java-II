@@ -49,7 +49,7 @@ public class PhoneNumberToLetters {
             currentCombination.deleteCharAt(currentCombination.length() - 1);
             //when we arrive at the final number our line 14 condition goes off and produces a String for our results list
             //that is when we arrive at this line of code which removes the final letter in the sequence, and we begin moving through
-            //our potential outcomes.
+            //our potential outcomes using recursive logic.
         }
     }
 }
