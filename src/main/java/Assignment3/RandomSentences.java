@@ -32,19 +32,29 @@ public class RandomSentences {
         preposition.add("under");
         preposition.add("on");
 
-        for (int i = 0; i <= 20; i++) {
+        for (int i = 0; i < 20; i++) {
             int articleIndex = rand.nextInt(5);
-            String articleWord = article.get(articleIndex);
+            for (int j = 0; j < (article.get(articleIndex).toCharArray().length); j++) {
+                if (j == 0) {
+                    char c = (article.get(articleIndex).toCharArray())[j];
+                    story.append(Character.toUpperCase(c));
+                } else {
+                    char c = (article.get(articleIndex).toCharArray())[j];
+                    story.append(c);
+                }
+            }
+            story.append(' ');
             int nounIndex = rand.nextInt(5);
-            String nounWord = noun.get(nounIndex);
+            story.append(noun.get(nounIndex)).append(' ');
             int verbIndex = rand.nextInt(5);
-            String verbWord = verb.get(verbIndex);
+            story.append(verb.get(verbIndex)).append(' ');
             int prepositionIndex = rand.nextInt(5);
-            String prepositionWord = preposition.get(prepositionIndex);
+            story.append(preposition.get(prepositionIndex)).append(' ');
             int article2Index = rand.nextInt(5);
-            String article2Word = article.get(articleIndex);
+            story.append(article.get(article2Index)).append(' ');
             int noun2Index = rand.nextInt(5);
-            String noun2Word = noun.get(nounIndex);
+            story.append(noun.get(noun2Index)).append(". ");
         }
+        System.out.println(story);
     }
 }
