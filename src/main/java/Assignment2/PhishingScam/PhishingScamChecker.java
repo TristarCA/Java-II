@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
+
 public class PhishingScamChecker {
         public static void checkScamScore(String filePath) {
             List<String> mildThreats = loadMildThreats();
