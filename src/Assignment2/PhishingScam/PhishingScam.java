@@ -5,7 +5,7 @@ public class PhishingScam {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         System.out.println("Please input the path to your potential scam email: ");
-        String filePath = "./email.txt";
+        String filePath = input.nextLine();
         PhishingScamChecker.checkScamScore(filePath);
     }
 }

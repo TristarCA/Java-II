@@ -1,45 +1,58 @@
 package Assignment3;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Redaction {
+    private static final Pattern DATE_PATTERN = Pattern.compile("\\b\\d{2}-\\d{2}-\\d{2,4}\\b");
+    private static final Pattern CREDIT_CARD_PATTERN = Pattern.compile("\\b\\d{4}-\\d{4}-\\d{4}-\\d{4}\\b");
+    private static final Pattern CURRENCY_PATTERN = Pattern.compile("\\$\\d+(\\.\\d{2})?");
+    private static final Pattern SECURITY_CODE_PATTERN = Pattern.compile("\\bCODE\\d{16}\\b*");
+
     public static void redactInformation() {
-        StringBuilder builder = new StringBuilder();
-        ArrayList<String> potentialRedactions = new ArrayList<>();
-        String filePath = "./src/main/java/Assignment3/sampleInfo.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("./src/main/java/Assignment3/sampleInfo.txt"));
+             BufferedWriter bw = new BufferedWriter(new FileWriter("./src/main/java/Assignment3/sampleInfoRedacted.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                potentialRedactions.add(line);
-            }
-            for (String potentialRedaction : potentialRedactions) {
-                redactionCheck(potentialRedaction, builder);
+                bw.write(redactLine(line));
+                bw.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try (Formatter formatter = new Formatter(new FileOutputStream("./src/main/java/Assignment3/sampleInfoRedacted.txt"))) {
-            for (String line : builder.toString().split("\n")) {
-                System.out.println(line);
-                formatter.format("%s%n", line);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
-        }
     }
 
-    private static void redactionCheck(String potentialRedaction, StringBuilder builder) {
-        for (char c : potentialRedaction.toCharArray()) {
-            if (Character.isDigit(c)) {
-                builder.append('#');
-            } else  {
-                builder.append(c);
-            }
-        }
-        builder.append("\n");
+    private static String redactLine(String line) {
+        Matcher matcher;
 
+        matcher = DATE_PATTERN.matcher(line);
+        if (matcher.find()) {
+            line = replacePattern(line, DATE_PATTERN, "##-##-####");
+        }
+
+        matcher = CREDIT_CARD_PATTERN.matcher(line);
+        if (matcher.find()) {
+            line = replacePattern(line, CREDIT_CARD_PATTERN, "####-####-####-####");
+        }
+
+        matcher = CURRENCY_PATTERN.matcher(line);
+        if (matcher.find() && line.length() >= 4) {
+            String currencyValue = matcher.group();
+            line = replacePattern(line, CURRENCY_PATTERN, "$" + "#".repeat(currencyValue.length() - 4) + ".##");
+        }
+
+        matcher = SECURITY_CODE_PATTERN.matcher(line);
+        if (matcher.find()) {
+            line = replacePattern(line, SECURITY_CODE_PATTERN, "CODE################");
+        }
+
+        return line;
+    }
+
+
+    private static String replacePattern(String line, Pattern pattern, String replacement) {
+        Matcher matcher = pattern.matcher(line);
+        return matcher.replaceAll(Matcher.quoteReplacement(replacement));
     }
 }
