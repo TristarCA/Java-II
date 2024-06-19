@@ -1,0 +1,18 @@
+16.4 The reason adding additional element to an ArrayList whose current size is less than capacity is a relatively fast operation
+in contrast to the same operation being done to an ArrayList that is already at capacity is due to how the growth of the ArrayList is handled.
+In an ArrayList that is not yet at capacity the ArrayList does not need to grow as it has already allocated memory sufficient enough for the
+new information. In an at capacity ArrayList however the additional information will cause it to grow which results in it creating
+a new, larger internal array and copying each of its element to the new array.
+
+16.5
+    1 The primary difference between a set and a map is that Maps contain key and value pairs whereas Sets only contain values.
+      In a Map the keys must be unique while the values do not need to be unique, in a Set the values must all be unique
+
+    2 When you add a primitive type to a collection it will be converted from a primitive value into an object of the
+      corresponding type-wrapper class.
+
+    3 Yes, but it would be very inefficient as you would need to type out each individual call to print the elements.
+      System.out.println(FirstElement);
+      System.out.println(SecondElement);
+      System.out.println(ThirdElement);
+      etc....
