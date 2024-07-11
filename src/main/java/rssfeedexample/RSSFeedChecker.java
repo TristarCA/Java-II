@@ -9,13 +9,12 @@ import java.util.List;
 
 public class RSSFeedChecker implements Runnable {
     private String feedUrl;
+    private int sleep;
 
-    public RSSFeedChecker(String feedUrl) {
+    public RSSFeedChecker(String feedUrl, int sleep) {
         this.feedUrl = feedUrl;
-    }
-
-    public void checkFeed() {
-
+        //this.rssItemList = rssItemList
+        this.sleep = sleep;
     }
 
     @Override
@@ -38,6 +37,7 @@ public class RSSFeedChecker implements Runnable {
                     String title = itemElement.getElementsByTagName("title").item(0).getTextContent();
                     String link = itemElement.getElementsByTagName("link").item(0).getTextContent();
                     String pubDate = itemElement.getElementsByTagName("pubDate").item(0).getTextContent();
+                    //this.rssItemlist.add(new RSSItem(title, link, pubDate))
                     items.add(new RSSItem(title, link, pubDate));
                 }
             }
@@ -53,30 +53,6 @@ public class RSSFeedChecker implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
-        }
-    }
-
-    private static class RSSItem {
-        private String title;
-        private String link;
-        private String pubDate;
-
-        public RSSItem(String title, String link, String pubDate) {
-            this.title = title;
-            this.link = link;
-            this.pubDate = pubDate;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getLink() {
-            return link;
-        }
-
-        public String getPubDate() {
-            return pubDate;
         }
     }
 }
