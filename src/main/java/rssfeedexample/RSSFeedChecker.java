@@ -10,49 +10,68 @@ import java.util.List;
 public class RSSFeedChecker implements Runnable {
     private String feedUrl;
     private int sleep;
+    private List<RSSItem> knownItems = new ArrayList<>();
 
     public RSSFeedChecker(String feedUrl, int sleep) {
         this.feedUrl = feedUrl;
-        //this.rssItemList = rssItemList
         this.sleep = sleep;
     }
 
     @Override
     public void run() {
         try {
+            while (!Thread.currentThread().isInterrupted()) {
+                checkFeed();
+                try {
+                    Thread.sleep(sleep);
+                } catch (InterruptedException e) {
+                    System.out.println("RSS feed checker interrupted during sleep. Exiting " + feedUrl);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("An error occurred in RSS feed checking: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void checkFeed() {
+        try {
             URL url = new URL(feedUrl);
-            //XML Document building
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(url.openStream());
 
-            //This is how you work with XML - you do not need to modify this!
             NodeList itemList = doc.getElementsByTagName("item");
             List<RSSItem> items = new ArrayList<>();
 
+            boolean newArticleFound = false;
             for (int i = 0; i < itemList.getLength(); i++) {
                 Node itemNode = itemList.item(i);
                 if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element itemElement = (Element) itemNode;
-                    String title = itemElement.getElementsByTagName("title").item(0).getTextContent();
-                    String link = itemElement.getElementsByTagName("link").item(0).getTextContent();
-                    String pubDate = itemElement.getElementsByTagName("pubDate").item(0).getTextContent();
-                    //this.rssItemlist.add(new RSSItem(title, link, pubDate))
-                    items.add(new RSSItem(title, link, pubDate));
+                    RSSItem newArticle = new RSSItem(
+                            itemElement.getElementsByTagName("title").item(0).getTextContent(),
+                            itemElement.getElementsByTagName("link").item(0).getTextContent(),
+                            itemElement.getElementsByTagName("pubDate").item(0).getTextContent()
+                    );
+
+                    if (!knownItems.contains(newArticle)) {
+                        newArticleFound = true;
+                        knownItems.add(newArticle);
+                        newArticle.print(System.out);
+                    }
+                    items.add(newArticle);
                 }
             }
 
-            System.out.println("Feed: " + feedUrl);
-            for (int i = 0; i < Math.min(3, items.size()); i++) {
-                RSSItem item = items.get(i);
-                System.out.println("Title: " + item.getTitle());
-                System.out.println("Link: " + item.getLink());
-                System.out.println("Published Date: " + item.getPubDate());
-                System.out.println();
+            if (!newArticleFound) {
+                System.out.println("No new articles have been posted to the RSS feed at " + feedUrl);
             }
+
+            knownItems = new ArrayList<>(items);
         } catch (Exception e) {
-            e.printStackTrace();
-            Thread.currentThread().interrupt();
+            System.err.println("Error processing the RSS feed: " + e.getMessage());
         }
     }
 }

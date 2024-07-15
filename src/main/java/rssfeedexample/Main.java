@@ -1,33 +1,49 @@
 package rssfeedexample;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 
-// May want to implement an RSSFeedApplication, RSSFeedCheckerRunnable(May already be complete with changes made to original RSSFeedChecker, and RSSItem class
-
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<String> feedUrls = new ArrayList<>();
-        final String end = "done";
-        String url = "";
-        List<RSSItem> rssItems = new ArrayList<>();
         ExecutorService executorService = Executors.newCachedThreadPool();
+
         System.out.println("Enter RSS feed URLs (type 'done' to finish): ");
-        while(!url.equals(end)) {
-            url = scanner.nextLine();
-            if (!url.equalsIgnoreCase(end)) {
-                feedUrls.add(url);
+        String url;
+        while (!(url = scanner.nextLine()).equalsIgnoreCase("done")) {
+            executorService.execute(new RSSFeedChecker(url, 60000));
+        }
+
+        System.out.println("RSS Feed Checkers are running. Type 'exit' to stop all feeds and exit the program.");
+
+        while (!scanner.nextLine().trim().equalsIgnoreCase("exit")) {
+            System.out.println("Type 'exit' to stop all feeds and exit the program.");
+        }
+
+        shutdownAndAwaitTermination(executorService);
+    }
+
+    private static void shutdownAndAwaitTermination(ExecutorService pool) {
+        System.out.println("Shutdown initiated, waiting for tasks to complete...");
+        for (int i = 0; i < 60; i++) {
+            if (pool.isTerminated()) {
+                System.out.println("All tasks have completed.");
+                return;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                return;
             }
         }
-        //executorService.execute(new RSSFeedChecker(url, rssItems, 1000)
-        for (String feedUrl : feedUrls) {
-            RSSFeedChecker checker = new RSSFeedChecker(feedUrl, 1000);
-            executorService.execute(checker);
-            executorService.shutdown();
+        System.out.println("Timeout reached before termination, forcing shutdown...");
+        pool.shutdownNow();
+        if (pool.isTerminated()) {
+            System.out.println("All tasks were terminated successfully after force shutdown.");
+        } else {
+            System.err.println("Some tasks may still be running.");
         }
     }
 }

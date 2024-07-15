@@ -1,6 +1,7 @@
 package rssfeedexample;
 
 import java.io.PrintStream;
+import java.util.Objects;
 
 public class RSSItem {
     private final String title;
@@ -31,8 +32,13 @@ public class RSSItem {
         out.println(pubDate);
     }
 
-    public boolean equals(RSSItem rssItem) {
-        return this.title.equals(rssItem.title) && this.link.equals(rssItem.link) && this.pubDate.equals(rssItem.pubDate);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RSSItem rssItem = (RSSItem) o;
+        return Objects.equals(title, rssItem.title) &&
+                Objects.equals(link, rssItem.link) &&
+                Objects.equals(pubDate, rssItem.pubDate);
     }
 }
-
