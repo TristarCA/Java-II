@@ -71,18 +71,16 @@ public class Dealer {
         return lines;
     }
 
-    // Get the single-character suit symbol
     private char getSuitSymbol(PlayingCard.Suit suit) {
         switch (suit) {
             case DIAMONDS: return '♦';
             case HEARTS:   return '♥';
             case CLUBS:    return '♣';
             case SPADE:    return '♠';
-            default:       return ' '; // Fallback, should never hit this
+            default:       return ' ';
         }
     }
 
-    // Convert card values to their corresponding face values or numbers
     private String getCardValueString(int value) {
         switch (value) {
             case PlayingCard.JACK:  return "J";
