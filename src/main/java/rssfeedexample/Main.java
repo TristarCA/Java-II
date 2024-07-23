@@ -4,6 +4,10 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 
+/*
+ * The Main class is an entry point for the RSS feed program. It allows users to input RS feed URLs, and will check those
+ *  feeds at a specified interval using a thread pool for concurrent execution
+ */
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -25,6 +29,12 @@ public class Main {
     }
 
     private static void shutdownAndAwaitTermination(ExecutorService pool) {
+        /**
+         * Shuts down the ExecutorService and waits for the completion of all tasks. If the tasks do not complete within
+         * a specified time, a shutdown is forced.
+         *
+         * @param pool: The ExecutorService to be shut down
+         */
         System.out.println("Shutdown initiated, waiting for tasks to complete...");
         for (int i = 0; i < 60; i++) {
             if (pool.isTerminated()) {
