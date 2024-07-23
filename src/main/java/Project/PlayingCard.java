@@ -95,7 +95,6 @@ public class PlayingCard {
         String val;
         Suit suitSymbol = playingCard.getSuit();
 
-        // Checks the suit enum of a PlayingCard and applies the appropriate symbol
         if (suitSymbol == Suit.DIAMONDS) {
             symbol = '\u2666';
         } else if (suitSymbol == Suit.SPADE) {
@@ -106,7 +105,6 @@ public class PlayingCard {
             symbol = '\u2665';
         }
 
-        // converts values of 11, 12, 13 or 14 (of a PlayingCard) to their card rank representation
         if (playingCard.getValue() == JACK) {
             val = "J";
         } else if (playingCard.getValue() == QUEEN) {
@@ -119,7 +117,6 @@ public class PlayingCard {
             val = String.valueOf(playingCard.getValue());
         }
 
-        // Builds the Ascii representation of the card using a string builder with checks for 10(it makes the card look wrong)
         str.append("┌──────────────┐\n");
         if (val.equals("10")) {
             str.append(String.format("| %s", symbol + val)).append("          |\n");

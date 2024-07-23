@@ -2,65 +2,75 @@ package Project;
 
 import java.util.Scanner;
 import java.io.PrintStream;
-import java.util.ArrayList;
 
-/**
- * The FunWithPlayingCards class is a simple interactive program that allows users
- * to perform actions with a deck of playing cards, such as drawing cards, drawing a hand,
- * displaying the hand, shuffling the deck, and printing the entire deck.
- */
 public class FunWithPlayingCards {
-
-    /**
-     * The main method where the program starts execution.
-     *
-     * @param args The command-line arguments (not used in this program).
-     */
     public static void main(String[] args) {
-        Dealer dealer = new Dealer();
-
         Scanner input = new Scanner(System.in);
         PrintStream stream = new PrintStream(System.out);
-        int choice;
-        int cont = 1;
-        ArrayList<PlayingCard> hand = new ArrayList<>();
-        stream.println("Fun with Playing Cards!");
-        stream.println("Creating Deck....");
+        Dealer dealer = new Dealer();
         Player player = new Player(100.00);
-        stream.println(player.getMoney());
-        stream.println("DEALERS HAND");
-        dealer.getHand();
-        ArrayList<PlayingCard> cardsForPlayer = dealer.dealCards();
-        stream.println("PLAYERS HAND");
-        for (PlayingCard card : cardsForPlayer) {
-            player.receiveCard(card);
-        }
-        player.getHand();
 
-        while (cont != 0) {
-            stream.println("****What would you like to do?****");
-            stream.printf("        CURRENT SCORE: %s\n", player.getScore());
-            stream.printf("        DEALER SCORE:  %s \n", dealer.getScore());
-            stream.println("-------------------------------------");
-            stream.println("|1.| Draw a Card.");
-            stream.println("|2.| Draw a Hand (5 Cards).");
-            stream.println("|3.| Display the Hand.");
-            stream.println("|5.| Print the Deck.");
-            choice = input.nextInt();
-
-            if (choice == 1) {
-                hand.add(dealer.getTopCard());
-            }  else if (choice == 3) {
-                for (PlayingCard card : hand) {
-                    PlayingCard.printAsciiCard(card, stream);
-                    stream.println();
-                }
-            } else {
-                stream.println("Not a valid Choice. Try Again.....");
+        boolean isGameOver = false;
+        while (!isGameOver) {
+            stream.println("You have $" + player.getMoney() + ". How much would you like to bet?");
+            double bet = input.nextDouble();
+            while (bet > player.getMoney() || bet <= 0) {
+                stream.println("Invalid bet. Please enter a valid amount up to $" + player.getMoney());
+                bet = input.nextDouble();
             }
 
-            stream.println("Continue....?(0 to exit)");
-            cont = input.nextInt();
-        } stream.println("BYE BYE!");
+            player.receiveCard(dealer.dealCard());
+            player.receiveCard(dealer.dealCard());
+            dealer.receiveCard(dealer.dealCard());
+            dealer.receiveCard(dealer.dealCard());
+
+            stream.println("Dealer's hand:");
+            dealer.showHand();
+            stream.println("Player's hand:");
+            player.showHand();
+
+            boolean playerTurn = true;
+            while (playerTurn && player.getScore() < 21) {
+                stream.println("Hit (1) or Stay (2)?");
+                int choice = input.nextInt();
+                if (choice == 1) {
+                    player.receiveCard(dealer.dealCard());
+                    player.showHand();
+                    if (player.getScore() > 21) {
+                        stream.println("Player busts. Dealer wins.");
+                        player.adjustCash(-bet);
+                        playerTurn = false;
+                    }
+                } else {
+                    playerTurn = false;
+                }
+            }
+
+            if (player.getScore() <= 21) {
+                while (dealer.getScore() < 17) {
+                    dealer.receiveCard(dealer.dealCard());
+                }
+                dealer.showHand();
+
+                if (dealer.getScore() > 21 || player.getScore() > dealer.getScore()) {
+                    stream.println("Player wins!");
+                    player.adjustCash(bet);
+                } else {
+                    stream.println("Dealer wins.");
+                    player.adjustCash(-bet);
+                }
+            }
+
+            stream.println("Continue playing? (Yes = 1, No = 0)");
+            if (input.nextInt() == 0 || player.getMoney() <= 0) {
+                isGameOver = true;
+            } else {
+                dealer.reset();
+                player.reset();
+            }
+        }
+
+        stream.println("Game over! Your final balance is $" + player.getMoney());
+        input.close();
     }
 }
