@@ -5,6 +5,7 @@ import java.io.PrintStream;
 
 public class FunWithPlayingCards {
     public static void main(String[] args) {
+        // TODO turn this into a server that will await a client connection, create a client and protocol as well, set up to pass objects between server and client
         Scanner input = new Scanner(System.in);
         PrintStream stream = new PrintStream(System.out);
         Dealer dealer = new Dealer();
