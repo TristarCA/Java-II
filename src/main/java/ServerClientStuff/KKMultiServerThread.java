@@ -12,7 +12,6 @@ public class KKMultiServerThread extends Thread {
     }
 
     public void run() {
-
         try (
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -26,7 +25,7 @@ public class KKMultiServerThread extends Thread {
             while ((inputLine = in.readLine()) != null) {
                 outputLine = kkp.processInput(inputLine);
                 out.println(outputLine);
-                if (outputLine.equals("Bye"))
+                if (outputLine.equals("N"))
                     break;
             }
             clientSocket.close();
