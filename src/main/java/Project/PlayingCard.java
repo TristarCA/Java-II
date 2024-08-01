@@ -1,12 +1,13 @@
 package Project;
 
+import java.io.Serializable;
 import java.io.PrintStream;
 
 /**
  * The PlayingCard class represents a standard playing card.
  * It includes methods to get the card's value and suit, and to print the card in ASCII art.
  */
-public class PlayingCard {
+public class PlayingCard implements Serializable {
 
     public static final int JACK = 11;
     public static final int QUEEN = 12;

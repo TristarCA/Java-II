@@ -1,7 +1,6 @@
 package Project;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Dealer {
     private ArrayList<PlayingCard> hand;
@@ -24,51 +23,36 @@ public class Dealer {
         updateScore();
     }
 
-    public void showHand() {
-        ArrayList<String> lines = new ArrayList<>(9);
+    public String showHand() {
+        StringBuilder handString = new StringBuilder();
 
-        for (int i = 0; i < 9; i++) {
-            lines.add("");
-        }
-
-        for (PlayingCard card : hand) {
-            List<String> cardLines = getAsciiCardLines(card);
-            for (int i = 0; i < 9; i++) {
-                lines.set(i, lines.get(i) + cardLines.get(i) + "  ");
+        for (int lineIndex = 0; lineIndex < 9; lineIndex++) {
+            for (PlayingCard card : hand) {
+                handString.append(getAsciiCardLine(card, lineIndex)).append("  ");
             }
+            handString.append("\n");
         }
 
-
-        for (String line : lines) {
-            System.out.println(line);
-        }
-        System.out.println("Dealer Score: " + this.score);
+        handString.append("Dealer Score: ").append(this.score).append("\n");
+        return handString.toString();
     }
 
-    private List<String> getAsciiCardLines(PlayingCard card) {
-        List<String> lines = new ArrayList<>();
+    private String getAsciiCardLine(PlayingCard card, int lineIndex) {
         char symbol = getSuitSymbol(card.getSuit());
         String value = getCardValueString(card.getValue());
 
-        // Format the card art
-        lines.add("┌──────────────┐");
-        if (value.equals("10")) {
-            lines.add(String.format("| %s          |", value + symbol));
-        } else {
-            lines.add(String.format("| %s           |", value + symbol));
+        switch (lineIndex) {
+            case 0: return "┌──────────────┐";
+            case 1: return value.equals("10") ? String.format("| %s          |", value + symbol) : String.format("| %s           |", value + symbol);
+            case 2:
+            case 3: return "|              |";
+            case 4: return String.format("|      %s       |", symbol);
+            case 5:
+            case 6: return "|              |";
+            case 7: return value.equals("10") ? String.format("|          %s |", value + symbol) : String.format("|           %s |", value + symbol);
+            case 8: return "└──────────────┘";
+            default: return "";
         }
-        lines.add("|              |");
-        lines.add("|              |");
-        lines.add(String.format("|      %s       |", symbol));
-        lines.add("|              |");
-        lines.add("|              |");
-        if (value.equals("10")) {
-            lines.add(String.format("|          %s |", value + symbol));
-        } else {
-            lines.add(String.format("|           %s |", value + symbol));
-        }
-        lines.add("└──────────────┘");
-        return lines;
     }
 
     private char getSuitSymbol(PlayingCard.Suit suit) {
@@ -89,12 +73,6 @@ public class Dealer {
             case PlayingCard.ACE:   return "A";
             default:                return String.valueOf(value);
         }
-    }
-
-
-
-    public int getScore() {
-        return this.score;
     }
 
     private void updateScore() {
@@ -124,5 +102,13 @@ public class Dealer {
         this.deck = new CardDeck();
         this.deck.shuffleDeck();
         this.score = 0;
+    }
+
+    public ArrayList<PlayingCard> getHand() {
+        return hand;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
