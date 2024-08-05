@@ -2,11 +2,18 @@ package Project;
 
 import java.util.ArrayList;
 
+/**
+ * The Dealer class represents the dealer in the Blackjack game.
+ * It manages the dealer's hand, deck of cards, and score.
+ */
 public class Dealer {
     private ArrayList<PlayingCard> hand;
     private CardDeck deck;
     private int score;
 
+    /**
+     * Constructs a new Dealer with a shuffled deck and an empty hand.
+     */
     public Dealer() {
         this.deck = new CardDeck();
         this.deck.shuffleDeck();
@@ -14,78 +21,71 @@ public class Dealer {
         this.score = 0;
     }
 
+    /**
+     * Deals a card from the deck.
+     *
+     * @return The drawn PlayingCard.
+     */
     public PlayingCard dealCard() {
         return deck.drawCard();
     }
 
+    /**
+     * Adds a card to the dealer's hand and updates the score.
+     *
+     * @param card The card to be added to the dealer's hand.
+     */
     public void receiveCard(PlayingCard card) {
         this.hand.add(card);
         updateScore();
     }
 
+    /**
+     * Displays the dealer's current hand as an ASCII art representation.
+     *
+     * @return A string representing the dealer's hand in ASCII art format and their current score.
+     */
     public String showHand() {
         StringBuilder handString = new StringBuilder();
+        StringBuilder[] cardLines = new StringBuilder[9];
 
-        for (int lineIndex = 0; lineIndex < 9; lineIndex++) {
-            for (PlayingCard card : hand) {
-                handString.append(getAsciiCardLine(card, lineIndex)).append("  ");
-            }
-            handString.append("\n");
+        // Initialize StringBuilder array
+        for (int i = 0; i < cardLines.length; i++) {
+            cardLines[i] = new StringBuilder();
         }
 
-        handString.append("Dealer Score: ").append(this.score).append("\n");
+        // Build each line of the ASCII card representation
+        for (PlayingCard card : hand) {
+            String[] asciiCard = card.getAsciiCard().toString().split("\n");
+            for (int lineIndex = 0; lineIndex < asciiCard.length; lineIndex++) {
+                cardLines[lineIndex].append(asciiCard[lineIndex]).append("  ");
+            }
+        }
+
+        // Combine all lines into the final handString
+        for (StringBuilder line : cardLines) {
+            handString.append(line.toString()).append("\n");
+        }
+
+        handString.append("Score: ").append(this.score).append("\n");
         return handString.toString();
     }
 
-    private String getAsciiCardLine(PlayingCard card, int lineIndex) {
-        char symbol = getSuitSymbol(card.getSuit());
-        String value = getCardValueString(card.getValue());
-
-        switch (lineIndex) {
-            case 0: return "┌──────────────┐";
-            case 1: return value.equals("10") ? String.format("| %s          |", value + symbol) : String.format("| %s           |", value + symbol);
-            case 2:
-            case 3: return "|              |";
-            case 4: return String.format("|      %s       |", symbol);
-            case 5:
-            case 6: return "|              |";
-            case 7: return value.equals("10") ? String.format("|          %s |", value + symbol) : String.format("|           %s |", value + symbol);
-            case 8: return "└──────────────┘";
-            default: return "";
-        }
-    }
-
-    private char getSuitSymbol(PlayingCard.Suit suit) {
-        switch (suit) {
-            case DIAMONDS: return '♦';
-            case HEARTS:   return '♥';
-            case CLUBS:    return '♣';
-            case SPADE:    return '♠';
-            default:       return ' ';
-        }
-    }
-
-    private String getCardValueString(int value) {
-        switch (value) {
-            case PlayingCard.JACK:  return "J";
-            case PlayingCard.QUEEN: return "Q";
-            case PlayingCard.KING:  return "K";
-            case PlayingCard.ACE:   return "A";
-            default:                return String.valueOf(value);
-        }
-    }
-
+    /**
+     * Updates the dealer's score based on the current hand.
+     * Aces are counted as 11 unless that would cause the score to exceed 21, in which case they are counted as 1.
+     */
     private void updateScore() {
         this.score = 0;
         int aces = 0;
         for (PlayingCard card : hand) {
-            char cardChar = card.toString().charAt(0);
-            if (cardChar == 'J' || cardChar == 'Q' || cardChar == 'K') {
+            int value = card.getValue();
+            if (value == PlayingCard.JACK || value == PlayingCard.QUEEN || value == PlayingCard.KING) {
                 this.score += 10;
-            } else if (cardChar == 'A') {
+            } else if (value == PlayingCard.ACE) {
                 aces++;
             } else {
-                this.score += card.getValue();
+                this.score += value;
             }
         }
         for (int i = 0; i < aces; i++) {
@@ -97,6 +97,9 @@ public class Dealer {
         }
     }
 
+    /**
+     * Resets the dealer's hand and score, and shuffles the deck.
+     */
     public void reset() {
         this.hand.clear();
         this.deck = new CardDeck();
@@ -104,10 +107,20 @@ public class Dealer {
         this.score = 0;
     }
 
+    /**
+     * Gets the dealer's current hand of cards.
+     *
+     * @return The dealer's hand as an ArrayList of PlayingCard objects.
+     */
     public ArrayList<PlayingCard> getHand() {
         return hand;
     }
 
+    /**
+     * Gets the dealer's current score.
+     *
+     * @return The dealer's current score.
+     */
     public int getScore() {
         return score;
     }

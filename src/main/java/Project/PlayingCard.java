@@ -13,8 +13,8 @@ public class PlayingCard implements Serializable {
     public static final int QUEEN = 12;
     public static final int KING = 13;
     public static final int ACE = 14;
-    private final int value;  // Represents the numeric value of the card (2-14).
-    private final Suit suit; // Represents the suit of the card.
+    private final int value;
+    private final Suit suit;
 
     /**
      * Constructs a PlayingCard with a specified value and suit.
@@ -85,42 +85,41 @@ public class PlayingCard implements Serializable {
     }
 
     /**
-     * Prints an ASCII art representation of the card to the specified PrintStream.
+     * Generates an ASCII art representation of the card.
      *
-     * @param playingCard The PlayingCard to print.
-     * @param printStream The PrintStream to which the ASCII art will be printed.
+     * @return A StringBuilder containing the ASCII art representation of the card.
      */
-    public static void printAsciiCard(PlayingCard playingCard, PrintStream printStream) {
+    public StringBuilder getAsciiCard() {
         StringBuilder str = new StringBuilder();
         char symbol;
         String val;
-        Suit suitSymbol = playingCard.getSuit();
+        Suit suitSymbol = this.getSuit();
 
         if (suitSymbol == Suit.DIAMONDS) {
-            symbol = '\u2666';
+            symbol = '\u2666'; // ♦
         } else if (suitSymbol == Suit.SPADE) {
-            symbol = '\u2660';
+            symbol = '\u2660'; // ♠
         } else if (suitSymbol == Suit.CLUBS) {
-            symbol = '\u2663';
+            symbol = '\u2663'; // ♣
         } else {
-            symbol = '\u2665';
+            symbol = '\u2665'; // ♥
         }
 
-        if (playingCard.getValue() == JACK) {
+        if (this.getValue() == JACK) {
             val = "J";
-        } else if (playingCard.getValue() == QUEEN) {
+        } else if (this.getValue() == QUEEN) {
             val = "Q";
-        } else if (playingCard.getValue() == KING) {
+        } else if (this.getValue() == KING) {
             val = "K";
-        } else if (playingCard.getValue() == ACE) {
+        } else if (this.getValue() == ACE) {
             val = "A";
         } else {
-            val = String.valueOf(playingCard.getValue());
+            val = String.valueOf(this.getValue());
         }
 
         str.append("┌──────────────┐\n");
         if (val.equals("10")) {
-            str.append(String.format("| %s", symbol + val)).append("          |\n");
+            str.append(String.format("| %s          |", symbol + val)).append("\n");
         } else {
             str.append(String.format("| %s           |\n", symbol + val));
         }
@@ -133,8 +132,9 @@ public class PlayingCard implements Serializable {
             str.append(String.format("|          %s", symbol + val)).append(" |\n");
         } else {
             str.append(String.format("|           %s |\n", symbol + val));
-        }str.append("└──────────────┘");
-        printStream.printf("%s", str);
+        }
+        str.append("└──────────────┘");
+        return str;
     }
 
     /**

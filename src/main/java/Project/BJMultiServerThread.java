@@ -7,13 +7,26 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import org.json.simple.JSONObject;
 
+/**
+ * The BJMultiServerThread class handles communication between the server and a single client in a multithreaded environment.
+ * It manages the input/output streams for the client and processes the game logic using the BlackJackProtocol class.
+ */
 public class BJMultiServerThread extends Thread {
     private Socket clientSocket;
 
+    /**
+     * Constructs a new BJMultiServerThread with the specified client socket.
+     *
+     * @param clientSocket The socket connected to the client.
+     */
     public BJMultiServerThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
+    /**
+     * The main logic for handling client communication and processing game states.
+     * This method runs in a separate thread for each client connection.
+     */
     public void run() {
         try (
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -22,7 +35,6 @@ public class BJMultiServerThread extends Thread {
             BlackJackProtocol protocol = new BlackJackProtocol();
             String inputLine;
 
-            // Send initial game state to client
             JSONObject initialMessage = protocol.processInput(null);
             out.println(initialMessage.toJSONString());
 
